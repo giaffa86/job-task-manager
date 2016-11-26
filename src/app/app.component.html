@@ -1,3 +1,11 @@
-<h1>
-  {{title}}
-</h1>
+<ul>
+    <li *ngFor="let item of items | async">
+      <span (click)=selectItem(item) >{{ item.item.name }}</span>
+    </li>
+</ul>
+<input [(ngModel)]="test" />
+
+
+<span class="app-action">
+  <button md-fab (click)="openDialog()" ><md-icon>playlist_add</md-icon></button>
+</span>
