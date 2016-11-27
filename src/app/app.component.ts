@@ -5,8 +5,8 @@ import { ItemDialogComponent } from './item-dialog/item-dialog.component';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  template: require('./app.component.html'),
+  styles: [require('./app.component.css')]
 })
 export class AppComponent {
   dialogRef: MdDialogRef<ItemDialogComponent>;
@@ -16,17 +16,18 @@ export class AppComponent {
   constructor(private af: AngularFire, public dialog: MdDialog) {
     this.items = af.database.list('/items');
     console.log(this.items);
-    this.selectedItem = 'prova';
+    this.selectedItem = { name: 'Prova' };
   }
 
-  click(item) {
+  selectItem(item) {
     console.log(item);
     this.selectedItem = item;
+    this.openDialog();
   }
 
   add() {
     console.log('add new item');
-    const newItem = {item: { name: 'Test'}};
+    // const newItem = {item: { name: 'Test'}};
     // this.items.push(newItem);
   }
 
@@ -35,15 +36,38 @@ export class AppComponent {
       disableClose: false,
     });
 
+    this.dialogRef.componentInstance.newItem = this.selectedItem;
+
     this.dialogRef.afterClosed().subscribe(result => {
       console.log('result: ' + result);
       this.dialogRef = null;
-      if(result) {
-        const newItem = {item: { name: result}};
-        console.log(newItem);
-        this.items.push(newItem)
+      if (result) {
+        if (result.delete) {
+          if (result.item && result.item.$key) {
+            this.items.remove(result.item.$key);
+          }
+        } else {
+          const key = result.$key;
+          if (key) {
+            delete result['$key'];
+            delete result['$exists'];
+            this.items.update(key, result);
+          } else {
+            console.log(result);
+            this.items.push(result);
+          }
+        }
       }
     });
   }
 
 }
+
+
+
+// WEBPACK FOOTER //
+// /home/fgiaffaglione/angular2/demo/~/angular2-template-loader!/home/fgiaffaglione/angular2/demo/src/app/app.component.ts
+
+
+// WEBPACK FOOTER //
+// /home/fgiaffaglione/angular2/demo/~/angular2-template-loader!/home/fgiaffaglione/angular2/demo/src/app/app.component.ts

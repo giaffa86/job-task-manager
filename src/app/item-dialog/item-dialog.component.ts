@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MdDialogRef } from '@angular/material';
 
 @Component({
@@ -6,11 +6,13 @@ import { MdDialogRef } from '@angular/material';
   templateUrl: './item-dialog.component.html',
   styleUrls: ['./item-dialog.component.css']
 })
-export class ItemDialogComponent {
-  firstname: string;
+export class ItemDialogComponent implements OnInit {
+  newItem: any;
 
-  constructor(public dialogRef: MdDialogRef<ItemDialogComponent>) { 
-    this.firstname = '';
+  constructor(public dialogRef: MdDialogRef<ItemDialogComponent>) {
+  }
+
+  ngOnInit() {
   }
 
 
