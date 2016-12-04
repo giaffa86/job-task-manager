@@ -1,0 +1,6 @@
+<div> {{ (af.auth | async)?.uid }}
+  <input type="text" [(ngModel)]="email" value="Email" />
+  <input type="password" [(ngModel)]="password" value="Password" />
+  <button (click)="login()">Entra</button>
+  <button (click)="goHome()">Home</button>
+</div>

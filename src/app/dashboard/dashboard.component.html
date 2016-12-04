@@ -1,0 +1,11 @@
+<ul>
+  <li *ngFor="let item of items | async">
+    <span (click)=selectItem(item)>{{ item.name }}</span>
+  </li>
+</ul>
+
+<button class="btn btn-primary btn-lg" (click)="logout()">Logout</button>
+
+<span class="app-action">
+  <button md-fab (click)="openDialog()" ><md-icon>playlist_add</md-icon></button>
+</span>

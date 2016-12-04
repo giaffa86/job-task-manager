@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { MdDialog, MdDialogRef } from '@angular/material';
-import { AngularFire, FirebaseListObservable } from 'angularfire2';
-import { ItemDialogComponent } from './item-dialog/item-dialog.component';
+import { AngularFire } from 'angularfire2';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @Component({
   selector: 'app-root',
@@ -9,56 +8,10 @@ import { ItemDialogComponent } from './item-dialog/item-dialog.component';
   styles: [require('./app.component.css')]
 })
 export class AppComponent {
-  dialogRef: MdDialogRef<ItemDialogComponent>;
-  items: FirebaseListObservable<any[]>;
-  selectedItem: any;
+  title = 'Job Task Manager';
 
-  constructor(private af: AngularFire, public dialog: MdDialog) {
-    this.items = af.database.list('/items');
-    console.log(this.items);
-    this.selectedItem = { name: 'Prova' };
-  }
+  constructor(private af: AngularFire) {
 
-  selectItem(item) {
-    console.log(item);
-    this.selectedItem = item;
-    this.openDialog();
-  }
-
-  add() {
-    console.log('add new item');
-    // const newItem = {item: { name: 'Test'}};
-    // this.items.push(newItem);
-  }
-
-  openDialog() {
-    this.dialogRef = this.dialog.open(ItemDialogComponent, {
-      disableClose: false,
-    });
-
-    this.dialogRef.componentInstance.newItem = this.selectedItem;
-
-    this.dialogRef.afterClosed().subscribe(result => {
-      console.log('result: ' + result);
-      this.dialogRef = null;
-      if (result) {
-        if (result.delete) {
-          if (result.item && result.item.$key) {
-            this.items.remove(result.item.$key);
-          }
-        } else {
-          const key = result.$key;
-          if (key) {
-            delete result['$key'];
-            delete result['$exists'];
-            this.items.update(key, result);
-          } else {
-            console.log(result);
-            this.items.push(result);
-          }
-        }
-      }
-    });
   }
 
 }
